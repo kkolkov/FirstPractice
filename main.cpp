@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  arrays
+//  StepikLab
 //
-//  Created by Кирилл Колков on 12.10.2020.
+//  Created by Кирилл Колков on 30.09.2020.
 //
 
 #include <iostream>
@@ -10,58 +10,84 @@ using namespace std;
 
 int main() {
     
-    int unsortedArray [5];
     
-    for (int i = 0; i <= 4; i++) {
-        cin >> unsortedArray [i];
-    }
+    // Вывести, сколько памяти (в байтах) на вашем компьютере отводится под различные типы данных со спецификаторами и без: int, short int, long int, float, double, long double, char и bool.
     
-    for (int j = 0; j <= 4; j++) {
-        int temporary = unsortedArray [0];
-        if (unsortedArray [j] <= unsortedArray [0]) {
-            temporary = unsortedArray [0];
-            unsortedArray [0] = unsortedArray [j];
-            unsortedArray [j] = temporary;
-            temporary = unsortedArray [0];
-        }
-    }
-    for (int j = 1; j <= 4; j++) {
-        int temporary = unsortedArray [1];
-        if (unsortedArray [j] <= unsortedArray [1]) {
-            temporary = unsortedArray [1];
-            unsortedArray [1] = unsortedArray [j];
-            unsortedArray [j] = temporary;
-            temporary = unsortedArray [1];
-        }
-    }
-    for (int j = 2; j <= 4; j++) {
-        int temporary = unsortedArray [2];
-        if (unsortedArray [j] <= unsortedArray [2]) {
-            temporary = unsortedArray [2];
-            unsortedArray [2] = unsortedArray [j];
-            unsortedArray [j] = temporary;
-            temporary = unsortedArray [2];
-        }
-    }
-    for (int j = 3; j <= 4; j++) {
-        int temporary = unsortedArray [3];
-        if (unsortedArray [j] <= unsortedArray [3]) {
-            temporary = unsortedArray [3];
-            unsortedArray [3] = unsortedArray [j];
-            unsortedArray [j] = temporary;
-            temporary = unsortedArray [3];
-        }
-    }
-    for (int j = 4; j <= 4; j++) {
-        int temporary = unsortedArray [4];
-        if (unsortedArray [j] <= unsortedArray [4]) {
-            temporary = unsortedArray [4];
-            unsortedArray [4] = unsortedArray [j];
-            unsortedArray [j] = temporary;
-            temporary = unsortedArray [4];
-        }
-    }
+    cout << "Под тип Integer в памяти отводится " << sizeof(int) << " байт\n";
+    cout << "Под тип Short Integer в памяти отводится " << sizeof(short int) << " байт\n";
+    cout << "Под тип Long Integer в памяти отводится " << sizeof(long int) << " байт\n";
+    cout << "Под тип Float в памяти отводится "  << sizeof(float) << " байт\n";
+    cout << "Под тип Double в памяти отводится "  << sizeof(double) << " байт\n";
+    cout << "Под тип Long Double в памяти отводится "  << sizeof(long double) << " байт\n";
+    cout << "Под тип Char в памяти отводится "  << sizeof(char) << " байт\n";
+    cout << "Под тип Bool в памяти отводится "  << sizeof(bool) << " байт\n" << "\n";
+
+    // Вывести на экран двоичное представление в памяти (все разряды) целого числа. При выводе необходимо визуально обозначить знаковый разряд и значащие разряды отступами или цветом.
     
+    int a;
+    unsigned int mask = 1 << 31;
     
-    cout << unsortedArray [0] << " " << unsortedArray [1] << " " << unsortedArray [2] << " " << unsortedArray [3] << " " << unsortedArray [4];
+    cout << "Для вывода на экран двоичного представления целого числа в памяти, введите это число: ";
+    cin >> a;
+    
+    cout << "Вот результат: ";
+    for (int i = 0; i <= 31; i++) {
+        if (i == 1) {
+            cout << " ";
+        }
+        putchar(a & mask ? '1' : '0');
+        mask >>= 1;
+    }
+    cout << "\n";
+    
+
+    // Вывести на экран двоичное представление в памяти (все разряды) типа float. При выводе необходимо визуально обозначить знаковый разряд мантиссы, знаковый разряд порядка (если есть), мантиссу и порядок.
+    
+    union {
+        int forFloat;
+        float b;
+    };
+    
+    unsigned int floatMask = 1 << 31;
+    
+    cout << "Для вывода на экран двоичного представления типа float в памяти, введите это число: ";
+    cin >> b;
+
+    for (int j = 0; j <= 31; j++) {
+        if (j == 1 || j == 9) {
+            cout << " ";
+        }
+        putchar(forFloat & floatMask ? '1' : '0');
+        forFloat <<= 1;
+    }
+    cout << "\n";
+    
+    // Вывести на экран двоичное представление в памяти (все разряды) типа double. При выводе необходимо визуально обозначить знаковый разряд мантиссы, знаковый разряд порядка (если есть), мантиссу и порядок. (*)
+    
+    // Ход мысли: Под Дабл в памяти отводится 8 байт, то есть 64 бита. Возникает проблема - мы не можем через Интеджер подглядеть в ячейку с Даблом, так как под Инт выделяется ровно в 2 раза меньше (4 байта).
+    // Вариантов сходу два: 1. Создать массив и положить в него 2 интеджера, придется работать с левой и правой половиной массива. 2. Заюзать Long Integer - тут и Int и 8 байт, через него и глянем в Дабл. Второй вариант нравится больше, но смущает то, то long int не int, так что выбираем 1 вариант.
+    
+    union {
+        int arr[2];
+        double c;
+    };
+    
+    unsigned int doubleMask = 1 << 31;
+    
+    cout << "Для вывода на экран двоичного представления типа double в памяти, введите это число: ";
+    cin >> c;
+    
+    for (int j = 0; j <= 31; j++) {
+        if (j == 1 || j == 12) {
+            cout << " ";
+        }
+        putchar(arr[1] & doubleMask ? '1' : '0');
+        arr[1] <<= 1;
+    }
+    for (int j = 0; j <= 31; j++) {
+
+        putchar(arr[0] & doubleMask ? '1' : '0');
+        arr[0] <<= 1;
+    }
+    cout << "\n";
 }
