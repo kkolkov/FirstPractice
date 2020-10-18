@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  StepikLab
+//  FirstPractice
 //
 //  Created by Кирилл Колков on 30.09.2020.
 //
